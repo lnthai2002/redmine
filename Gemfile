@@ -71,6 +71,8 @@ end
 group :development do
   gem "rdoc", ">= 2.4.2"
   gem "yard"
+  gem 'capistrano'
+  gem 'rvm-capistrano'                       #support instructing capistrano to choose which ruby version from rvm
 end
 
 group :test do

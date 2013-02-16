@@ -1,6 +1,6 @@
 require "rvm/capistrano"
 require "bundler/capistrano" #not recommend use this because development and deployment on different platform(32b,64b) may cause problem installing gem due to missing ARCHFLAGS=
-load "deploy/assets"
+#load "deploy/assets"
 
 #declare multi-stage deployment
 require 'capistrano/ext/multistage'

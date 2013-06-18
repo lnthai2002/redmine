@@ -19,7 +19,8 @@ namespace :deploy do
 
   desc "Overwrite database.yml with the protected file on prod machine"
   task :copy_configuration do
-    run "cp #{config_loc} #{release_path}/config/database.yml"
+    run "cp #{config_loc}/config/#{rails_env}.database.yml #{release_path}/config/database.yml"
+    run "cp #{config_loc}/config/initializers/secret_token.rb #{release_path}/config/initializers/secret_token.rb"
   end
 
   desc "Restart passenger with restart.txt"

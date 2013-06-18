@@ -11,4 +11,4 @@ set :deploy_to, "/var/www/redmine"
 set :user, "nhut_le"                                        #user on production server to deploy
 set :use_sudo, false
 
-set :config_loc, "/home/CONFIG/ubuntu/var/www/redmine/config/#{rails_env}.database.yml"
+set :config_loc, "/home/CONFIG/ubuntu/var/www/redmine"

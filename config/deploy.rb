@@ -13,6 +13,7 @@ set :stages, %w(production uat)
 set :default_stage, "production"
 
 set :application, "redmine"                               #name of application
+set :shared_children, shared_children + %w{files}        #share user uploaded files across release
 
 namespace :deploy do
   after "deploy:update_code" , "deploy:copy_configuration"

@@ -1,3 +1,36 @@
+require "rvm/capistrano"                                  #use RVM
+require "bundler/capistrano"                              #use bundler
+default_run_options[:pty] = true                          #must be set for the password prompt from git to work
+
+set :scm, "git"                                           #deploy from git repository
+set :repository, "git@github.com:lnthai2002/redmine.git"  #location of repository
+set :ssh_options, {:forward_agent => true}                #use ssh key when deploy
+set :deploy_via, :remote_cache                            #dont clone repo each deployment but pull difference only
+set :keep_releases, 2                                     #keep maximum 2 release
+
+require 'capistrano/ext/multistage'                       #multi-stage deployment
+set :stages, %w(production uat)
+set :default_stage, "production"
+
+set :application, "redmine"                               #name of application
+
+namespace :deploy do
+  after "deploy:update_code" , "deploy:copy_configuration"
+
+  desc "Overwrite database.yml with the protected file on prod machine"
+  task :copy_configuration do
+    run "cp #{config_loc}/config/#{rails_env}.database.yml #{release_path}/config/database.yml"
+    run "cp #{config_loc}/config/initializers/secret_token.rb #{release_path}/config/initializers/secret_token.rb"
+  end
+
+  desc "Restart passenger with restart.txt"
+  task :restart, :except => { :no_release => true } do
+    run "touch #{current_path}/tmp/restart.txt"
+  end
+end
+
+
+=begin
 require "rvm/capistrano"
 require "bundler/capistrano" #not recommend use this because development and deployment on different platform(32b,64b) may cause problem installing gem due to missing ARCHFLAGS=
 #load "deploy/assets"
@@ -105,3 +138,4 @@ end
 def run_rake(cmd)
   run "cd #{current_path}; #{rake} #{cmd}"
 end
+=end
